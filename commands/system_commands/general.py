@@ -4,11 +4,6 @@ import pyautogui
 import time
 import objc
 
-
-
-
-
-
 class Appearance:
 
     def __init__(self):
@@ -128,6 +123,3 @@ class Networking:
             print(f"Successfully connected to '{ssid}' using password.")
         else:
             print("Failed to connect:", error)
-
-
-     

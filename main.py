@@ -2,10 +2,10 @@ from commands.system_commands.general import Appearance, Networking, Audio
 from utils.api import make_request
 import re
 
-command_str = make_request()
+command_str = make_request().strip()
 
-match = re.search(r'[`\'"](\w+)[`\'"]', command_str)
-command_str = match.group(1) if match else None
+# match = re.search(r'[`\'"](\w+)[`\'"]', command_str)
+# command_str = match.group(1) if match else None
 
 
 appearance = Appearance()
