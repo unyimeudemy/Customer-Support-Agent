@@ -12,7 +12,6 @@ appearance = Appearance()
 command = getattr(appearance, command_str)
 command()
 
-
 # appearance.change_theme()
 # appearance.increase_font_size()
 # appearance.decrease_font_size()
