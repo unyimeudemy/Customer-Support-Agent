@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (
     QWidget
 )
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, Qt
 from run_server import (
     start_django_server,
     start_reactjs_server,
@@ -28,11 +28,11 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Alena")
         self.resize(1000, 600)
         self.center()
-
+                
         central_widget = QWidget()
         layout = QVBoxLayout()
         view = QWebEngineView()
-        view.setUrl(QUrl("http://localhost:3000/"))
+        view.setUrl(QUrl("http://localhost:5173/"))
         
         layout.addWidget(view)
         central_widget.setLayout(layout)
