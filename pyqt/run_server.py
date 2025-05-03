@@ -11,9 +11,11 @@ def start_django_server():
         os.path.join(os.path.dirname(__file__), "../backend")
     )
 
+    venv_path = os.path.abspath(os.path.join(backend_path, "../env/bin/python"))
     manage_py = os.path.join(backend_path, "manage.py")
+
     django_process = subprocess.Popen(
-        ["python3", manage_py, "runserver"],
+        [venv_path, manage_py, "runserver"],
         cwd=backend_path,
         # stdout=subprocess.DEVNULL,
         # stderr=subprocess.DEVNULL

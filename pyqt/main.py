@@ -5,8 +5,10 @@ from PyQt5.QtWidgets import (
     QMainWindow, 
     QDesktopWidget, 
     QVBoxLayout, 
-    QWidget
+    QWidget,
+    QSizePolicy
 )
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl, Qt
 from run_server import (
@@ -33,8 +35,12 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         view = QWebEngineView()
         view.setUrl(QUrl("http://localhost:5173/"))
+        view.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
         
         layout.addWidget(view)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 

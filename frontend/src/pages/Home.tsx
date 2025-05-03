@@ -1,9 +1,18 @@
 // import React from 'react'
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
+import SideBar from "../components/SideBar"
+import NavBar from "../components/NavBar"
+import IncomingQueue from "../components/IncomingQueue"
+import ProcessedQueue from "../components/ProcessedQueue"
+import DashBoard from "../components/DashBoard"
+import Footer from "../components/Footer"
 
-const Container = styled.div`
-`
+const Container = styled.div``
+const Wrapper = styled.div``
+const Body = styled.div``
+const QueueAndDMContainer = styled.div``
+
 
 const Home = () => {
     const navigate = useNavigate()
@@ -11,12 +20,19 @@ const Home = () => {
 
 
   return (
-    <Container >
-        <div className=" text-yellow font-bold text-[60px]">Home</div>
-        <button 
-            className=" h-[50px] w-[200px] bg-red text-black border border-blue-200"
-            onClick={() => navigate("/setting")}
-        >Click here</button>
+    <Container className="h-full flex flex-col w-screen " >
+      <NavBar/>
+      <Wrapper className="w-full h-full flex flex-row ">
+        <SideBar/>
+        <Body className="w-full h-full bg-[#e6e6e6] ">
+          <IncomingQueue/>
+          <QueueAndDMContainer className=" flex flex-row  h-full bg-red-400">
+            <ProcessedQueue />
+            <DashBoard/>
+          </QueueAndDMContainer>
+        </Body>
+      </Wrapper>
+      <Footer/>
     </Container>
   )
 }
