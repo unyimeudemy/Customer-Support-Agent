@@ -17,8 +17,6 @@ const QueueAndDMContainer = styled.div``
 const Home = () => {
     const navigate = useNavigate()
 
-
-
   return (
     <Container className="h-full flex flex-col w-screen " >
       <NavBar/>
@@ -26,7 +24,7 @@ const Home = () => {
         <SideBar/>
         <Body className="w-full h-full bg-[#e6e6e6] ">
           <IncomingQueue/>
-          <QueueAndDMContainer className=" flex flex-row  h-full bg-red-400">
+          <QueueAndDMContainer className=" flex flex-row  h-full bg-white">
             <ProcessedQueue />
             <DashBoard/>
           </QueueAndDMContainer>

@@ -7,7 +7,7 @@ const DashBoard = () => {
 
 
   return (
-    <div className="h-full w-full bg-yellow-500">
+    <div className="h-full w-full  rounded-tl-[50px] bg-[#e6e6e6]">
         <div className=" text-yellow font-bold text-[60px]">Home</div>
         <button 
             className=" h-[50px] w-[200px] bg-red text-black border border-blue-200"
