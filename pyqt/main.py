@@ -18,6 +18,16 @@ from run_server import (
     stop_reactjs_server
 )
 import requests
+import os
+import ctypes
+from pathlib import Path
+from decouple import Config, RepositoryEnv
+from pathlib import Path
+
+
+env_path = Path(__file__).resolve().parent.parent / ".env"
+config = Config(repository=RepositoryEnv(env_path))
+
 
 class MainWindow(QMainWindow):
 
