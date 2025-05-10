@@ -22,7 +22,7 @@ const Home = () => {
       <NavBar/>
       <Wrapper className="w-full h-full flex flex-row ">
         <SideBar/>
-        <Body className="w-full h-full bg-[#e6e6e6] ">
+        <Body className="w-full h-full  bg-white ">
           <UnprocessedQueue
             highlightId={highlightId}
             setHighlightId={setHighlightId}

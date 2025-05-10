@@ -14,8 +14,10 @@ from PyQt5.QtCore import QUrl, Qt
 from run_server import (
     start_django_server,
     start_reactjs_server,
+    start_redis_server,
     stop_django_server,
-    stop_reactjs_server
+    stop_reactjs_server,
+    stop_redis_server,
 )
 import requests
 import os
@@ -36,6 +38,7 @@ class MainWindow(QMainWindow):
 
         start_reactjs_server()
         start_django_server()
+        start_redis_server()
 
         self.setWindowTitle("Alena")
         self.resize(1000, 600)
@@ -63,6 +66,7 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         stop_reactjs_server()
         stop_django_server()
+        stop_redis_server()
         event.accept()
         
 

@@ -26,6 +26,7 @@ class TelegramClientWrapper():
             self.api_hash
         )
 
+
     async def send_message(self, recipient, message):
         async with self.client:
             await self.client.send_message(recipient, message)
@@ -65,6 +66,14 @@ class TelegramClientWrapper():
             result_dict = result.to_dict()
             return result_dict
 
+
     def add_multiple_contacts_sync(self, contacts_list):
         loop = asyncio.get_event_loop()
         return loop.run_until_complete(self.add_multiple_contacts(contacts_list))
+
+    # @client.on(events.NewMessage)
+    # async def handle_new_message(event):
+    #     # This will be called whenever a new message comes in
+    #     user = await event.get_sender()  # Get the user who sent the message
+    #     message = event.message.text  # Get the content of the message
+    #     print(f"New message from {user.username if user.username else 'unknown'}: {message}")

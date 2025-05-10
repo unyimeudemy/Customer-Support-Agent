@@ -187,7 +187,7 @@ type HighlightType = {
 const ProcessedQueue = ({highlightId, setHighlightId}: HighlightType) => {
 
   return (
-    <Container className="w-[90px] h-[720px] p-3 space-y-3 bg-white overflow-y-auto hide-scrollbar  mt-[35px]">
+    <Container className="w-[90px] h-[680px] p-3 space-y-3 bg-white overflow-y-auto hide-scrollbar  mt-[35px]">
        {customers.map((customer) => (
         <ProcessedCustomer
           setHighlightId={setHighlightId}

@@ -187,7 +187,7 @@ const UnprocessedQueue = ({highlightId, setHighlightId}: HighlightType) => {
   
 
   return (
-    <Container className="w-[1360px] h-[60px] bg-white">
+    <Container className="w-[1310px] h-[60px] bg-white">
       <Wrapper className="w-[90.6%] h-[60px]  overflow-x-auto flex items-center  ml-auto hide-scrollbar">
         {customers.map((customer) => (
         <UprocessedCustomer

@@ -1,8 +1,12 @@
 import subprocess
 import os
+import signal
+
 
 django_process = None
 reactjs_process = None
+redis_process = None
+
 
 def start_django_server():
     global django_process
@@ -21,6 +25,7 @@ def start_django_server():
         # stderr=subprocess.DEVNULL
     )
 
+
 def start_reactjs_server():
     global reactjs_process
 
@@ -34,12 +39,35 @@ def start_reactjs_server():
         # stderr=subprocess.DEVNULL
     )
 
+
 def stop_django_server():
     global django_process
     if django_process:
         django_process.terminate()
 
+
 def stop_reactjs_server():
     global reactjs_process
     if reactjs_process:
         reactjs_process.terminate()
+
+
+def start_redis_server():
+    global redis_process
+
+    current_dir = os.path.dirname(__file__)
+    redis_path = os.path.abspath(os.path.join(current_dir, "../embedded_redis"))
+    redis_executable = os.path.join(redis_path, "redis-server")
+
+    redis_process =  subprocess.Popen(
+        [redis_executable],
+        cwd=redis_path,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+
+
+def stop_redis_server():
+    global redis_process
+    if redis_process:
+        redis_process.terminate()

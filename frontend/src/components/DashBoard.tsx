@@ -1,4 +1,10 @@
 import { useNavigate } from "react-router-dom"
+import styled from "styled-components"
+import Conversation from "./Conversation"
+import Processes from "./Processes"
+
+const Wrapper = styled.div``
+
 
 
 
@@ -7,13 +13,19 @@ const DashBoard = () => {
 
 
   return (
-    <div className="h-full w-full  rounded-tl-[50px] bg-[#e6e6e6]">
-        <div className=" text-yellow font-bold text-[60px]">Home</div>
-        <button 
-            className=" h-[50px] w-[200px] bg-red text-black border border-blue-200"
-            onClick={() => navigate("/setting")}
-        >Click here</button>
-      
+    <div className="h-[91.5%] w-[92.6%]  rounded-[10px] bg-[#e6e6e6] "
+    style={{
+      boxShadow: '8px 8px 7px rgba(0, 0, 0, 0.3)'
+    }}
+    >
+        <Wrapper
+          className="w-full h-full p-5  rounded-[10px]
+          flex flex-row 
+          "
+        >
+          <Conversation/>
+          <Processes/>
+        </Wrapper>
     </div>
   )
 }
