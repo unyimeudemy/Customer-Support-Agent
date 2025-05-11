@@ -21,19 +21,6 @@ class TelegramView(APIView):
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 
 
-    
-
-
-@api_view(['GET'])
-def add_task_to_done(request):
-        print("=============== 3 ===============")
-        print(redis_client.get_queue_count())
-        redis_client.move_task_from_processing_q_to_done_q()
-        # redis_client.empty_a_queue('done_tasks')
-        print(redis_client.get_queue_count())
-        return Response({"message": "successful"}, status=status.HTTP_200_OK)
-
-
 @api_view(['GET'])
 def add_new_task(request):
         print("=============== 1 ===============")
@@ -44,8 +31,17 @@ def add_new_task(request):
 
 @api_view(['GET'])
 def add_task_to_processing(request):
-    print("=============== 2 ===============")
-    print(redis_client.get_queue_count())
-    redis_client.move_task_from_incoming_q_to_processing_q()
-    print(redis_client.get_queue_count())
-    return Response({"message": "successful"}, status=status.HTTP_200_OK)
+        print("=============== 2 ===============")
+        print(redis_client.get_queue_count())
+        redis_client.move_task_from_incoming_q_to_processing_hash()
+        print(redis_client.get_queue_count())
+        return Response({"message": "successful"}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def add_task_to_done(request):
+        print("=============== 3 ===============")
+        print(redis_client.get_queue_count())
+        redis_client.move_task_from_processing_hash_to_done_hash()
+        # redis_client.empty_a_queue('done_tasks')
+        print(redis_client.get_queue_count())
+        return Response({"message": "successful"}, status=status.HTTP_200_OK)
