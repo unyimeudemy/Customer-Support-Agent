@@ -19,12 +19,13 @@ def start_django_server():
     manage_py = os.path.join(backend_path, "manage.py")
 
     django_process = subprocess.Popen(
-        [venv_path, manage_py, "runserver"],
+        # [venv_path, manage_py, "runserver"],
+        [venv_path, "-m", "daphne", "agent.asgi:application"],
         cwd=backend_path,
         # stdout=subprocess.DEVNULL,
         # stderr=subprocess.DEVNULL
     )
-
+# daphne agent.asgi:application
 
 def start_reactjs_server():
     global reactjs_process

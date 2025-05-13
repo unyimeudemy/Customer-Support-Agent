@@ -1,13 +1,30 @@
 import redis
 import json
 from .omni_channel_message import OmniChannelMessage1
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 redisClient = redis.Redis(host='localhost', port=6379, decode_responses=True)
+channel_layer = get_channel_layer()
+
+
 processing_arr = []
 done_arr = []
 
-def add_task_to_incoming_q(message_obj: OmniChannelMessage1):
+async def add_task_to_incoming_q(message_obj: OmniChannelMessage1):
     redisClient.rpush("incoming_tasks", json.dumps(message_obj.__dict__))
+
+    await channel_layer.group_send(
+        "queue_updates",
+        {
+            "type": "queue.update",
+            "data": {
+                "action": "incoming_added",
+                "task": message_obj.__dict__,
+            }
+        }
+    )
+
 
 def move_task_from_incoming_q_to_processing_hash():
     task_str = redisClient.lpop("incoming_tasks")

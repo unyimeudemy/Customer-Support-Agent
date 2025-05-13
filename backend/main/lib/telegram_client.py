@@ -79,7 +79,7 @@ class TelegramClientWrapper():
             timestamp=timestamp,
             content=message
         )
-        add_task_to_incoming_q(chat)
+        await add_task_to_incoming_q(chat)
         print(chat)
 
     async def start(self):
