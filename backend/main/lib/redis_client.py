@@ -18,13 +18,9 @@ async def add_task_to_incoming_q(message_obj: OmniChannelMessage1):
         "queue_updates",
         {
             "type": "queue.update",
-            "data": {
-                "action": "incoming_added",
-                "task": message_obj.__dict__,
-            }
+            "data" : message_obj.__dict__,
         }
     )
-
 
 def move_task_from_incoming_q_to_processing_hash():
     task_str = redisClient.lpop("incoming_tasks")
@@ -61,3 +57,15 @@ def get_queue_status():
         "processing": [json.loads(task) for task in processing],
         "done": [json.loads(task) for task in done],
     }
+
+
+# await channel_layer.group_send(
+#     "queue_updates",
+#     {
+#         "type": "queue.update",
+#         "data": {
+#             "action": "incoming_added",
+#             "task": message_obj.__dict__,
+#         }
+#     }
+# )

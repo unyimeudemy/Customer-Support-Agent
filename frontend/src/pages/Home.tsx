@@ -6,7 +6,7 @@ import UnprocessedQueue from "../components/UnprocessedQueue"
 import ProcessedQueue from "../components/ProcessedQueue"
 import DashBoard from "../components/DashBoard"
 import Footer from "../components/Footer"
-import { useEffect, useState } from "react"
+import {  useEffect, useState } from "react"
 
 const Container = styled.div``
 const Wrapper = styled.div``
@@ -14,8 +14,19 @@ const Body = styled.div``
 const QueueAndDMContainer = styled.div``
 
 
+type customerType = {
+  channel: string,
+  sender_id: string,
+  sender_name: string,
+  timestamp: string,
+  content: string,
+}
+
+
 const Home = () => {
   const [highlightId, setHighlightId] = useState<string | null>(null)
+  // const customersList: customersListType[] = [] 
+  const [customerList, setCustomerList] = useState<customerType[]>([])
 
 
   useEffect(() => {
@@ -28,6 +39,7 @@ const Home = () => {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("New update:", data);
+      setCustomerList((prev) => [...prev, data])
       // e.g. dispatch to Redux or setState to update UI
     };
   
@@ -47,6 +59,7 @@ const Home = () => {
           <UnprocessedQueue
             highlightId={highlightId}
             setHighlightId={setHighlightId}
+            customerList={customerList}
           />
           <QueueAndDMContainer className=" flex flex-row  h-full bg-white">
             <ProcessedQueue
