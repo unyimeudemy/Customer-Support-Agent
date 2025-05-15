@@ -1,7 +1,6 @@
 import redis
 import json
 from .omni_channel_message import OmniChannelMessage1
-from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 redisClient = redis.Redis(host='localhost', port=6379, decode_responses=True)
@@ -15,20 +14,27 @@ async def add_task_to_incoming_q(message_obj: OmniChannelMessage1):
     redisClient.rpush("incoming_tasks", json.dumps(message_obj.__dict__))
 
     await channel_layer.group_send(
-        "queue_updates",
+        "unprocessed_customer_queue",
         {
             "type": "queue.update",
             "data" : message_obj.__dict__,
         }
     )
 
-def move_task_from_incoming_q_to_processing_hash():
+async def move_task_from_incoming_q_to_processing_hash():
     task_str = redisClient.lpop("incoming_tasks")
     if task_str:
         task = json.loads(task_str)
         message_id = task.get("message_id")
         if message_id:
             redisClient.hset("processing_tasks", message_id, json.dump(task))
+            await channel_layer.group_send(
+                "currently_processed_customer_list",
+                {
+                    "type": "list.update",
+                    "data" : task,
+                }
+            )
         return task
     return None
 

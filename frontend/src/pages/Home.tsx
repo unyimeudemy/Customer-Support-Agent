@@ -25,30 +25,53 @@ type customerType = {
 
 const Home = () => {
   const [highlightId, setHighlightId] = useState<string | null>(null)
-  // const customersList: customersListType[] = [] 
   const [customerList, setCustomerList] = useState<customerType[]>([])
+  // const [
+  //   currentlyProcessedCustomer,
+  //   setCurrentlyProcessedCustomer
+  // ] = useState<customerType[]>([])
 
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8000/ws/queues/");
+    const socket = new WebSocket("ws://localhost:8000/ws/unprocessed_customers/");
   
     socket.onopen = () => {
-      console.log("WebSocket connected");
+      console.log("unprocessed_customers connected");
     };
   
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("New update:", data);
+      console.log("unprocessed_customers update:", data);
       setCustomerList((prev) => [...prev, data])
       // e.g. dispatch to Redux or setState to update UI
     };
   
     socket.onclose = () => {
-      console.log("WebSocket disconnected");
+      console.log("unprocessed_customers disconnected");
     };
   
     return () => socket.close();
   }, []);
+
+
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:8000/ws/currently_processed_customer/")
+
+    socket.onopen = () => {
+      console.log("currently_processed_customer connected")
+    }
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("currently_processed_customer update:", data);
+    }
+
+    socket.onclose = () => {
+      console.log("currently_processed_customer closed")
+    }
+
+    return () => socket.close()
+  },[])
 
   return (
     <Container className="h-full flex flex-col w-screen " >
