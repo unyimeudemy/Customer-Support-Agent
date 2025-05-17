@@ -5,6 +5,9 @@ from .lib import telegram_client, redis_client
 from rest_framework import status
 from .lib import redis_client
 from rest_framework.decorators import api_view
+from .lib.omni_channel_message import OmniChannelMessage1
+from datetime import datetime
+import asyncio
 
 
 
@@ -21,27 +24,45 @@ class TelegramView(APIView):
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 
 
+
+# Example data
+channel_data = "telegram"
+content_data = "Hello, how can I help?"
+sender_id_data = "unyimeudoh2"
+sender_name_data = "unyime sim 2 udoh"
+parsed_timestamp = datetime.utcnow()
+
+# Create the instance
+message_1 = OmniChannelMessage1(
+    channel=channel_data,
+    content=content_data,
+    sender_id=sender_id_data,
+    sender_name=sender_name_data,
+    timestamp=parsed_timestamp
+)
+
 @api_view(['GET'])
 def add_new_task(request):
         print("=============== 1 ===============")
         print(redis_client.get_queue_count())
-        redis_client.add_task_to_incoming_q("1", "This is a task")
+        redis_client.add_task_to_incoming_q(message_1)
         print(redis_client.get_queue_count())
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def add_task_to_processing(request):
         print("=============== 2 ===============")
-        print(redis_client.get_queue_count())
-        redis_client.move_task_from_incoming_q_to_processing_hash()
-        print(redis_client.get_queue_count())
+        # print(redis_client.get_queue_count())
+        asyncio.run(redis_client.move_task_from_incoming_q_to_processing_hash())
+        
+        # print(redis_client.get_queue_count())
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def add_task_to_done(request):
         print("=============== 3 ===============")
-        print(redis_client.get_queue_count())
-        redis_client.move_task_from_processing_hash_to_done_hash()
+        # print(redis_client.get_queue_count())
+        asyncio.run(redis_client.move_task_from_processing_hash_to_done_hash("unyimeudoh2"))
         # redis_client.empty_a_queue('done_tasks')
-        print(redis_client.get_queue_count())
+        # print(redis_client.get_queue_count())
         return Response({"message": "successful"}, status=status.HTTP_200_OK)

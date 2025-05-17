@@ -10,18 +10,19 @@ const ClickIndication = styled.div``
 
 
 
-type CustomerData = {
-  id: string,
+type customerType = {
   channel: string,
-  notification: string,
-  detail: string
+  sender_id: string,
+  sender_name: string,
+  timestamp: string,
+  content: string,
 }
 
 type CustomerProps = {
   isHighlighted: boolean,
   setHighlightId: (id: string) => void,
   id: string,
-  data: CustomerData
+  data: customerType
 }
 
 const ProcessedCustomer = ({isHighlighted, setHighlightId, id, data}: CustomerProps) => {
@@ -49,7 +50,7 @@ const ProcessedCustomer = ({isHighlighted, setHighlightId, id, data}: CustomerPr
 
       <Notification className="relative bg-[#009900] w-[20px] h-[20px] rounded-full text-white
         font-extrabold text-[12px] flex items-center justify-center right-[12px] bottom-[15px] z-[30]
-        ">{data.notification}</Notification>
+        ">{"3"}</Notification>
 
 
       {isHighlighted &&<ClickIndication 

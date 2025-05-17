@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
+
 import telegramIcon from "../assets/telegramIcon.webp"
 import gmailIcon from "../assets/gmailIcon.webp"
 import whatsappIcon from "../assets/whatsappIcon.png"
@@ -7,17 +8,17 @@ import whatsappIcon from "../assets/whatsappIcon.png"
 const Container = styled.div``
 const Wrapper = styled.div``
 const Notification = styled.div``
-const ChannelIcon = styled.img``
-const ClickIndication = styled.div``
+const fade = keyframes`
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+`;
+
+const ChannelIcon = styled.img`
+  animation: ${fade} 1.5s infinite ease-in-out;
+`;const ClickIndication = styled.div``
 
 
-
-// type CustomerData = {
-//   id: string,
-//   channel: string,
-//   notification: string,
-//   detail: string
-// }
 
 type CustomerData = {
   channel: string,
@@ -34,7 +35,8 @@ type CustomerProps = {
   data: CustomerData
 }
 
-const UprocessedCustomer = ({isHighlighted, setHighlightId, id, data}: CustomerProps) => {
+
+const ProcessingCustomer = ({isHighlighted, setHighlightId, id, data}: CustomerProps) => {
 
   const handleClick = () => {
     setHighlightId(id)
@@ -49,7 +51,7 @@ const UprocessedCustomer = ({isHighlighted, setHighlightId, id, data}: CustomerP
       ">
 
       <Wrapper className="w-[40px] h-[40px] rounded-full border border-[#b3b3b3] 
-      flex items-center justify-center z-[20]
+      flex items-center justify-center z-[20] 
       ">
         <ChannelIcon 
           src={(data.channel === "telegram") ? telegramIcon : (
@@ -70,4 +72,4 @@ const UprocessedCustomer = ({isHighlighted, setHighlightId, id, data}: CustomerP
   )
 }
 
-export default UprocessedCustomer
+export default ProcessingCustomer

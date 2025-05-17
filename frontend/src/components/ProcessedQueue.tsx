@@ -12,187 +12,32 @@ const Container = styled.div`
   }
 `
 
-const customers = [
-  {
-    id: "1",
-    channel: gmailIcon,
-    notification: "3",
-    detail: "Here is the detail"
-  },
-  {
-    id: "2",
-    channel: gmailIcon,
-    notification: "1",
-    detail: "Here is the detail"
-  },
-  {
-    id: "3",
-    channel: telegramIcon,
-    notification: "1",
-    detail: "Here is the detail"
-  },
-  {
-    id: "4",
-    channel: whatsappIcon,
-    notification: "1",
-    detail: "Here is the detail"
-  },
-  {
-    id: "5",
-    channel: whatsappIcon,
-    notification: "10",
-    detail: "Here is the detail"
-  },
-  {
-    id: "6",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "7",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "8",
-    channel: whatsappIcon,
-    notification: "10",
-    detail: "Here is the detail"
-  },
-  {
-    id: "9",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "10",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "11",
-    channel: telegramIcon,
-    notification: "1",
-    detail: "Here is the detail"
-  },
-  {
-    id: "12",
-    channel: whatsappIcon,
-    notification: "1",
-    detail: "Here is the detail"
-  },
-  {
-    id: "13",
-    channel: whatsappIcon,
-    notification: "10",
-    detail: "Here is the detail"
-  },
-  {
-    id: "14",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "15",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "16",
-    channel: whatsappIcon,
-    notification: "10",
-    detail: "Here is the detail"
-  },
-  {
-    id: "17",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "18",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "19",
-    channel: telegramIcon,
-    notification: "1",
-    detail: "Here is the detail"
-  },
-  {
-    id: "20",
-    channel: whatsappIcon,
-    notification: "1",
-    detail: "Here is the detail"
-  },
-  {
-    id: "21",
-    channel: whatsappIcon,
-    notification: "10",
-    detail: "Here is the detail"
-  },
-  {
-    id: "22",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "23",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "24",
-    channel: whatsappIcon,
-    notification: "10",
-    detail: "Here is the detail"
-  },
-  {
-    id: "25",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "26",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  },
-  {
-    id: "27",
-    channel: gmailIcon,
-    notification: "2",
-    detail: "Here is the detail"
-  }
-];
+type customerType = {
+  channel: string,
+  sender_id: string,
+  sender_name: string,
+  timestamp: string,
+  content: string,
+}
 
 
 type HighlightType = {
   highlightId: string | null,
-  setHighlightId: (id: string) => void
+  setHighlightId: (id: string) => void,
+  processedCustomers: Map<string, customerType>
 }
 
 
-const ProcessedQueue = ({highlightId, setHighlightId}: HighlightType) => {
+const ProcessedQueue = ({highlightId, setHighlightId, processedCustomers}: HighlightType) => {
 
   return (
     <Container className="w-[90px] h-[680px] p-3 space-y-3 bg-white overflow-y-auto hide-scrollbar  mt-[35px]">
-       {customers.map((customer) => (
+       {Array.from(processedCustomers.values()).map((customer, sender_id) => (
         <ProcessedCustomer
+          key={sender_id}
           setHighlightId={setHighlightId}
-          isHighlighted={highlightId == customer.id}
-          id={customer.id}
+          isHighlighted={highlightId == customer.sender_id}
+          id={customer.sender_id}
           data={customer}
       />
        ))}

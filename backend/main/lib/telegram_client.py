@@ -80,7 +80,6 @@ class TelegramClientWrapper():
             content=message
         )
         await add_task_to_incoming_q(chat)
-        print(chat)
 
     async def start(self):
         await self.client.start()

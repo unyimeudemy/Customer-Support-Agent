@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import UprocessedCustomer from "./UnprocessedCustomer";
+import ProcessingCustomer from "./ProcessingCustomer";
 
 
 const Wrapper = styled.div`
@@ -9,6 +10,7 @@ const Wrapper = styled.div`
   }
 `;
 const Container = styled.div``;
+const ProcessingQueue = styled.div``
 
 type customerType = {
   channel: string,
@@ -22,18 +24,31 @@ type customerType = {
 type HighlightType = {
   highlightId: string | null,
   setHighlightId: (id: string) => void,
-  customerList: customerType[]
+  // customerList: customerType[],
+  customerList: Map<string, customerType>,
+  // currentlyProcessedCustomers: customerType[]
+  currentlyProcessedCustomers: Map<string, customerType>,
 }
 
 
-const UnprocessedQueue = ({highlightId, setHighlightId, customerList}: HighlightType) => {
-  console.log("customer list: ", customerList)
+const UnprocessedQueue = ({highlightId, setHighlightId, customerList, currentlyProcessedCustomers}: HighlightType) => {
 
 
   return (
     <Container className="w-[1310px] h-[60px] bg-white">
       <Wrapper className="w-[90.6%] h-[60px]  overflow-x-auto flex items-center  ml-auto hide-scrollbar">
-        {customerList.map((customer, sender_id) => (
+        <ProcessingQueue className="h-full w-auto  flex items-center pl-2 mr-[-5px]">
+          {Array.from(currentlyProcessedCustomers.values()).map((customer, sender_id) => (
+            <ProcessingCustomer
+              key={sender_id}
+              setHighlightId={setHighlightId}
+              isHighlighted={highlightId == customer.sender_id}
+              id={customer.sender_id}
+              data={customer}
+            />
+          ))}
+        </ProcessingQueue>
+        {Array.from(customerList.values()).map((customer, sender_id) => (
         <UprocessedCustomer
           key={sender_id}
           setHighlightId={setHighlightId}
