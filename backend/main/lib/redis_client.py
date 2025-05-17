@@ -14,7 +14,12 @@ async def add_task_to_incoming_q(message_obj: OmniChannelMessage1):
         # redisClient.delete("incoming_tasks")
         # redisClient.delete("processing_tasks")
         # redisClient.delete("done_tasks")
+        # print("==incoming  ==> ", get_queue_count())
 
+    # """
+    # ensure that task is not already in the incoming task before 
+    # adding it
+    # """
     if not redisClient.sismember("incoming_tasks_set", message_obj.sender_id):
         redisClient.sadd("incoming_tasks_set", message_obj.sender_id)
         redisClient.rpush("incoming_tasks", json.dumps(message_obj.__dict__))
@@ -44,15 +49,15 @@ async def move_task_from_incoming_q_to_processing_hash():
                 }
             )
 
-async def move_task_from_processing_hash_to_done_hash(message_id: str):
-    task_str = redisClient.hget("processing_tasks", message_id)
+async def move_task_from_processing_hash_to_done_hash(sender_id: str):
+    task_str = redisClient.hget("processing_tasks", sender_id)
     if task_str:
         task = json.loads(task_str)
-        sender_id = task.get("sender_id")
-        if sender_id and not redisClient.sismember("processing_tasks_set", sender_id):
-            redisClient.srem("processing_tasks_set", sender_id)
-            redisClient.rpush("done_tasks", message_id, task_str)
-            redisClient.hdel("processing_tasks", message_id)
+        if sender_id:
+            if not redisClient.sismember("done_tasks_set", sender_id):
+                redisClient.sadd("done_tasks_set", sender_id)
+                redisClient.rpush("done_tasks", sender_id, task_str)
+            redisClient.hdel("processing_tasks", sender_id)
             print("== move to done ==> ", get_queue_count())
             await channel_layer.group_send(
                 "processed_customer_list",

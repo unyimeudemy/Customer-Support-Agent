@@ -1,8 +1,12 @@
 import styled from "styled-components"
+import telegramIcon from "../assets/telegramIcon.webp"
+import gmailIcon from "../assets/gmailIcon.webp"
+import whatsappIcon from "../assets/whatsappIcon.png"
+import { motion } from "framer-motion";
 
 
 
-const Container = styled.div``
+const Container = styled(motion.div)``
 const Wrapper = styled.div``
 const Notification = styled.div``
 const ChannelIcon = styled.img``
@@ -34,6 +38,15 @@ const ProcessedCustomer = ({isHighlighted, setHighlightId, id, data}: CustomerPr
 
   return (
     <Container 
+      layout
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{
+        scale: 0,
+        opacity: 1,
+        transition: { duration: 0.3, ease: "easeOut" }  
+      }}      
+      transition={{ duration: 0.2, ease: "easeInOut" }}
       onClick={handleClick}
       className="w-auto h-[45px]   flex-shrink-0 flex items-center 
       cursor-pointer hover:scale-110 transition-transform duration-200
@@ -43,7 +56,10 @@ const ProcessedCustomer = ({isHighlighted, setHighlightId, id, data}: CustomerPr
       flex items-center justify-center z-[20]
       ">
         <ChannelIcon 
-          src={data.channel}
+          src={
+            data.channel == "telegram"
+            ? telegramIcon : (data.channel == "whatsapp" ? whatsappIcon : gmailIcon)
+          }
           className="h-[20px] w-[20px]"
         />
       </Wrapper>

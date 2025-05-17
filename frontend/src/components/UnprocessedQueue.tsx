@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import UprocessedCustomer from "./UnprocessedCustomer";
 import ProcessingCustomer from "./ProcessingCustomer";
+import {  AnimatePresence } from "framer-motion";
+
 
 
 const Wrapper = styled.div`
@@ -24,9 +26,7 @@ type customerType = {
 type HighlightType = {
   highlightId: string | null,
   setHighlightId: (id: string) => void,
-  // customerList: customerType[],
   customerList: Map<string, customerType>,
-  // currentlyProcessedCustomers: customerType[]
   currentlyProcessedCustomers: Map<string, customerType>,
 }
 
@@ -37,26 +37,32 @@ const UnprocessedQueue = ({highlightId, setHighlightId, customerList, currentlyP
   return (
     <Container className="w-[1310px] h-[60px] bg-white">
       <Wrapper className="w-[90.6%] h-[60px]  overflow-x-auto flex items-center  ml-auto hide-scrollbar">
-        <ProcessingQueue className="h-full w-auto  flex items-center pl-2 mr-[-5px]">
-          {Array.from(currentlyProcessedCustomers.values()).map((customer, sender_id) => (
-            <ProcessingCustomer
-              key={sender_id}
-              setHighlightId={setHighlightId}
-              isHighlighted={highlightId == customer.sender_id}
-              id={customer.sender_id}
-              data={customer}
-            />
-          ))}
+        <ProcessingQueue className="h-full min-w-[70px] flex items-center pl-2 mr-[-5px]">
+          <AnimatePresence mode="popLayout">
+              {Array.from(currentlyProcessedCustomers.values()).map((customer) => (
+                <ProcessingCustomer
+                  key={customer.sender_id}
+                  setHighlightId={setHighlightId}
+                  isHighlighted={highlightId == customer.sender_id}
+                  id={customer.sender_id}
+                  data={customer}
+                />
+              ))}
+          </AnimatePresence>
+
         </ProcessingQueue>
-        {Array.from(customerList.values()).map((customer, sender_id) => (
-        <UprocessedCustomer
-          key={sender_id}
-          setHighlightId={setHighlightId}
-          isHighlighted={highlightId == customer.sender_id}
-          id={customer.sender_id}
-          data={customer}
-        />
-        ))}
+        <AnimatePresence mode="popLayout">
+          {Array.from(customerList.values()).map((customer, sender_id) => (
+          <UprocessedCustomer
+            key={sender_id}
+            setHighlightId={setHighlightId}
+            isHighlighted={highlightId == customer.sender_id}
+            id={customer.sender_id}
+            data={customer}
+          />
+          ))}
+        </AnimatePresence>
+
       </Wrapper>
     </Container>
 
