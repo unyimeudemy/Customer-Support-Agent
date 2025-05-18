@@ -10,7 +10,7 @@ from datetime import datetime
 from decouple import config
 from .omni_channel_message import OmniChannelMessage1
 from .redis_client import add_task_to_incoming_q
-
+from .task_handlers import incoming_tasks_handler
 
 class TelegramClientWrapper():
 
@@ -79,7 +79,7 @@ class TelegramClientWrapper():
             timestamp=timestamp,
             content=message
         )
-        await add_task_to_incoming_q(chat)
+        await incoming_tasks_handler(chat)
 
     async def start(self):
         await self.client.start()

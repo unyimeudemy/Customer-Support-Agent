@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from kombu import Exchange, Queue
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,6 +82,20 @@ CHANNEL_LAYERS = {
         },
     }
 }
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_TASK_QUEUES = (
+    Queue("io_tasks",  Exchange("io_tasks"),  routing_key="io_tasks"),
+    Queue("cpu_tasks", Exchange("cpu_tasks"), routing_key="cpu_tasks"),
+)
+
+# Default queue for un‑decorated tasks
+CELERY_TASK_DEFAULT_QUEUE      = "io_tasks"
+CELERY_TASK_DEFAULT_EXCHANGE   = "io_tasks"
+CELERY_TASK_DEFAULT_ROUTING_KEY= "io_tasks"
 
 
 # Database

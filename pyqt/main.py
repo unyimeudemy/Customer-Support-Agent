@@ -15,9 +15,12 @@ from run_server import (
     start_django_server,
     start_reactjs_server,
     start_redis_server,
+    start_celery_processes,
     stop_django_server,
     stop_reactjs_server,
     stop_redis_server,
+    stop_celery_processes,
+
 )
 import requests
 import os
@@ -39,6 +42,7 @@ class MainWindow(QMainWindow):
         start_reactjs_server()
         start_django_server()
         start_redis_server()
+        start_celery_processes()
 
         self.setWindowTitle("Alena")
         self.resize(1000, 600)
@@ -67,6 +71,7 @@ class MainWindow(QMainWindow):
         stop_reactjs_server()
         stop_django_server()
         stop_redis_server()
+        stop_celery_processes()
         event.accept()
         
 

@@ -6,6 +6,8 @@ import signal
 django_process = None
 reactjs_process = None
 redis_process = None
+celery_io_process = None
+celery_cpu_process = None
 
 
 def start_django_server():
@@ -25,7 +27,13 @@ def start_django_server():
         # stdout=subprocess.DEVNULL,
         # stderr=subprocess.DEVNULL
     )
-# daphne agent.asgi:application
+
+
+def stop_django_server():
+    global django_process
+    if django_process:
+        django_process.terminate()
+
 
 def start_reactjs_server():
     global reactjs_process
@@ -39,12 +47,6 @@ def start_reactjs_server():
         # stdout=subprocess.DEVNULL,
         # stderr=subprocess.DEVNULL
     )
-
-
-def stop_django_server():
-    global django_process
-    if django_process:
-        django_process.terminate()
 
 
 def stop_reactjs_server():
@@ -72,3 +74,50 @@ def stop_redis_server():
     global redis_process
     if redis_process:
         redis_process.terminate()
+
+
+def start_celery_processes():
+    global celery_io_process, celery_cpu_process
+
+    backend_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "../backend")
+    )
+    celery_bin = os.path.abspath(os.path.join(backend_path, "../env/bin/celery"))
+
+    # I/O‑bound worker (threads)
+    celery_io_process = subprocess.Popen(
+        [
+            celery_bin,
+            "-A", "agent",
+            "worker",
+            "--loglevel=info",
+            "--pool=threads",
+            "--concurrency=5",
+            "--queues=io_tasks",
+            "--hostname=io_worker_host",
+        ],
+        cwd=backend_path,
+    )
+
+    # CPU‑bound worker (prefork)
+    celery_cpu_process = subprocess.Popen(
+        [
+            celery_bin,
+            "-A", "agent",
+            "worker",
+            "--loglevel=info",
+            "--pool=prefork",
+            "--concurrency=1",
+            "--queues=cpu_tasks",
+            "--hostname=cpu_worker_host",
+        ],
+        cwd=backend_path,
+    )
+
+def stop_celery_processes():
+    global celery_io_process, celery_cpu_process
+
+    for proc in (celery_io_process, celery_cpu_process):
+        if proc and proc.poll() is None:
+            proc.send_signal(signal.SIGTERM)
+

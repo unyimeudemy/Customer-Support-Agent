@@ -16,10 +16,10 @@ async def add_task_to_incoming_q(message_obj: OmniChannelMessage1):
         # redisClient.delete("done_tasks")
         # print("==incoming  ==> ", get_queue_count())
 
-    # """
-    # ensure that task is not already in the incoming task before 
-    # adding it
-    # """
+    """
+    ensure that task is not already in the incoming task before 
+    adding it
+    """
     if not redisClient.sismember("incoming_tasks_set", message_obj.sender_id):
         redisClient.sadd("incoming_tasks_set", message_obj.sender_id)
         redisClient.rpush("incoming_tasks", json.dumps(message_obj.__dict__))
