@@ -9,8 +9,7 @@ def handle_failed_order_email(self, chat):
         Will be routed automatically to the 'io_tasks' queue.
     """
     print("------ started order email task -----")
-    # (Your SMTP or HTTP‑API email‑sending logic here)
-    time.sleep(10)  # simulate delay
+    time.sleep(10)  
     print("----- order email task finished ------", chat)
 
 

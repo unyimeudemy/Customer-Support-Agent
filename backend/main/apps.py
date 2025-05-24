@@ -3,6 +3,7 @@ from .lib import telegram_client
 import asyncio
 import threading
 
+
 class MainConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'main'
@@ -11,6 +12,7 @@ class MainConfig(AppConfig):
         def start_telegram():
             try:
                 wrapper = telegram_client.TelegramClientWrapper()
+                telegram_client.telegram_client_wrapper_instance = wrapper
                 asyncio.run(wrapper.start())
             except Exception as e:
                 print(f"Error starting Telegram client: {e}")
