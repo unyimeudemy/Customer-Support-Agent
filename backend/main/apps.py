@@ -3,6 +3,10 @@ from .lib import telegram_client
 import asyncio
 import threading
 
+# from transformers import AutoTokenizer
+# from pathlib import Path
+# import urllib.request
+
 
 class MainConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
@@ -19,3 +23,18 @@ class MainConfig(AppConfig):
 
         thread = threading.Thread(target=start_telegram, daemon=True)
         thread.start()
+
+
+        # base_dir = Path(__file__).resolve().parent.parent
+        # embeddings_dir = base_dir / 'embedded_onnx'
+        # tokenizer_dir = embeddings_dir / 'tokenizer'
+
+        # if not embeddings_dir.exists():
+        #     embeddings_dir.mkdir()
+
+
+        # # Download tokenizer if not present
+        # if not tokenizer_dir.exists():
+        #     print("Downloading tokenizer...")
+        #     tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
+        #     tokenizer.save_pretrained(tokenizer_dir)

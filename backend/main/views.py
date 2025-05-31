@@ -1,3 +1,4 @@
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from decouple import config
@@ -8,7 +9,15 @@ from rest_framework.decorators import api_view
 from .lib.omni_channel_message import OmniChannelMessage1
 from datetime import datetime
 import asyncio
+from main.vector.chroma_client import collection
+import logging
 
+logging.getLogger('chromadb').setLevel(logging.WARNING)
+
+# import logging
+# logging.getLogger("transformers").setLevel(logging.ERROR)
+# logging.getLogger("chromadb").setLevel(logging.ERROR)
+# logging.getLogger("onnxruntime").setLevel(logging.ERROR)
 
 
 
@@ -56,6 +65,19 @@ def add_task_to_processing(request):
         asyncio.run(redis_client.move_task_from_incoming_q_to_processing_hash())
         
         # print(redis_client.get_queue_count())
+
+        try:
+                collection.add(
+                        documents=[
+                                "To reset your password, click the 'Forgot Password' link on the login page.",
+                                "Our customer support is available 24/7 via chat or phone."
+                        ],
+                        ids=["doc1", "doc2"],
+                )
+                return Response({"message": "successful"}, status=200)
+        except Exception as e:
+                print({"error": str(e)})
+
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -65,4 +87,15 @@ def add_task_to_done(request):
         asyncio.run(redis_client.move_task_from_processing_hash_to_done_hash("unyimeudoh2"))
         # redis_client.empty_a_queue('done_tasks')
         # print(redis_client.get_queue_count())
+
+        try:
+                results = collection.query(
+                        query_texts=["will there be someone to help with it tommorow?"],
+                        n_results=1,
+                        include=["documents", "metadatas"]
+                )
+                print("---------------------> ", results)
+                return Response({"message": "successful"}, status=200)
+        except Exception as e:
+                print({"error": str(e)})
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
