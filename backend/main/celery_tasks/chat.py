@@ -25,14 +25,20 @@ def generate_answer(query, context):
     return response.text
 
 
-@shared_task(bind=True, queue="io_tasks")
+@shared_task(
+    bind=True,
+    queue="io_tasks",
+    autoretry_for=(),  # do not retry for any exception
+    retry_backoff=False,
+    max_retries=0,
+    acks_late=False
+)
 def handle_telegram_chat(self, chat):
     try:
         from main.lib.telegram_client import telegram_client_wrapper_instance
         reply_text = ""
 
         intent = classify_intent(chat["content"])
-        # print("============ intent ==============> ", intent)
 
         if intent == "OPEN_ENDED":
             print("---------- this is open ended ----------> ")
@@ -41,8 +47,7 @@ def handle_telegram_chat(self, chat):
                     n_results=5,
                     include=["documents", "metadatas"]
             )
-            # reply_text = context["documents"][0][0]
-            print(context["documents"][0][0])
+
             reply_text = generate_answer(chat["content"], context["documents"][0])
 
         else:

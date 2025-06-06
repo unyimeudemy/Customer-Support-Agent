@@ -70,8 +70,8 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         stop_reactjs_server()
         stop_django_server()
-        stop_redis_server()
         stop_celery_processes()
+        stop_redis_server()
         event.accept()
         
 

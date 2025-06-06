@@ -94,3 +94,4 @@ def setup_chroma_client():
     except Exception as e:
             print({"error": str(e)})
 
+# ks
