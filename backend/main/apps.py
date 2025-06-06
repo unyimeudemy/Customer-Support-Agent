@@ -2,10 +2,8 @@ from django.apps import AppConfig
 from .lib import telegram_client
 import asyncio
 import threading
+import os
 
-# from transformers import AutoTokenizer
-# from pathlib import Path
-# import urllib.request
 
 
 class MainConfig(AppConfig):
@@ -13,6 +11,12 @@ class MainConfig(AppConfig):
     name = 'main'
 
     def ready(self):
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+
+        from main.vector.chroma_client import setup_chroma_client
+        setup_chroma_client()
+
         def start_telegram():
             try:
                 wrapper = telegram_client.TelegramClientWrapper()
@@ -25,16 +29,3 @@ class MainConfig(AppConfig):
         thread.start()
 
 
-        # base_dir = Path(__file__).resolve().parent.parent
-        # embeddings_dir = base_dir / 'embedded_onnx'
-        # tokenizer_dir = embeddings_dir / 'tokenizer'
-
-        # if not embeddings_dir.exists():
-        #     embeddings_dir.mkdir()
-
-
-        # # Download tokenizer if not present
-        # if not tokenizer_dir.exists():
-        #     print("Downloading tokenizer...")
-        #     tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
-        #     tokenizer.save_pretrained(tokenizer_dir)
