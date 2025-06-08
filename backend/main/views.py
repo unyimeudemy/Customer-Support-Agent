@@ -40,6 +40,7 @@ channel_data = "telegram"
 content_data = "Hello, how can I help?"
 sender_id_data = "unyimeudoh2"
 sender_name_data = "unyime sim 2 udoh"
+phone = "+2347046886451"
 parsed_timestamp = datetime.utcnow()
 
 # Create the instance
@@ -48,6 +49,7 @@ message_1 = OmniChannelMessage1(
     content=content_data,
     sender_id=sender_id_data,
     sender_name=sender_name_data,
+    phone=phone,
     timestamp=parsed_timestamp
 )
 

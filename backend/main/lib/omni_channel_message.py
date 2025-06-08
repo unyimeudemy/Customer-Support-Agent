@@ -6,12 +6,14 @@ class OmniChannelMessage1:
                 channel: str,
                 sender_id: str,
                 sender_name: str,
+                phone: str,
                 timestamp: Optional[datetime] = None,
                 content: str = ""):
         self.channel = channel
         self.sender_id = sender_id
         self.sender_name = sender_name
         self.content = content
+        self.phone = phone
         self.timestamp = timestamp or datetime.now()
     
     def __repr__(self):

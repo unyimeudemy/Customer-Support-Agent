@@ -3,11 +3,15 @@ from google import genai
 from decouple import config
 from main.lib.intent_classifier import classify_intent
 from main.lib import kb_collection_store
+from main.lib.workflow_map import WORKFLOW_MAP
+from main.lib.workflow_executor  import workflow_executor
 
 def generate_answer(query, context):
     """Generate response summary"""
-    prompt = f"""Answer the question based on the context below.
-    If the answer isn't contained in the context, say "I don't know."
+    prompt = f"""
+    You are a customer service AI agent called Allena for Piraxx limited. 
+    Only provide answers based on the information explicitly found in the context below. 
+    Do not make assumptions. If unsure, say "I don't know."
 
     ### Question:
     {query}
@@ -28,7 +32,7 @@ def generate_answer(query, context):
 @shared_task(
     bind=True,
     queue="io_tasks",
-    autoretry_for=(),  # do not retry for any exception
+    autoretry_for=(),  
     retry_backoff=False,
     max_retries=0,
     acks_late=False
@@ -49,17 +53,18 @@ def handle_telegram_chat(self, chat):
             )
 
             reply_text = generate_answer(chat["content"], context["documents"][0])
-
+            if telegram_client_wrapper_instance:
+                telegram_client_wrapper_instance.queue_message(
+                    recipient=chat["sender_id"],
+                    message=reply_text
+                )
         else:
-            print("---------- call a workflow ----------")
-            pass
+            print("---------- call a workflow ----------" )
+            workflow = WORKFLOW_MAP.get(intent)
+            final_context = workflow_executor(workflow, chat["phone"])
+            print("final context: ", final_context)
 
 
-        if telegram_client_wrapper_instance:
-            telegram_client_wrapper_instance.queue_message(
-                recipient=chat["sender_id"],
-                message=reply_text
-            )
     except Exception as e:
         print(f"chat io chat process failed with exceptions: {e}")
 

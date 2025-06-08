@@ -17,7 +17,12 @@ intent_collection = client.get_or_create_collection(
 )
 
 def classify_intent(query: str, threshold: float = 0.05) -> str:
-    """Query the vector store"""
+    """
+        compares the users message (natural language) with workflow embeddings 
+        to get the most appropriate workflow. If not found, the users message
+        is considered an open ended question to be answered with companys
+        knowledge base.
+    """
     results = intent_collection.query(
         query_texts=[query],
         n_results=1  
@@ -32,7 +37,7 @@ def classify_intent(query: str, threshold: float = 0.05) -> str:
 
 
     if similarity >= threshold:
-        return top_metadata["intent"]
+        return results["metadatas"][0][0]["intent"]
     return "OPEN_ENDED"
 
 

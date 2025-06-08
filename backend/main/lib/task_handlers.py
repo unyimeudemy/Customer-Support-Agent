@@ -57,8 +57,6 @@ def on_task_done(args=None, **_):
     if args:
         task_input = args[0]
         sender_id = task_input.get("sender_id") if isinstance(task_input, dict) else None
-        print(f"Sender ID from task args: {sender_id}")
-
     asyncio.run(move_task_from_processing_hash_to_done_hash(sender_id))
 
 

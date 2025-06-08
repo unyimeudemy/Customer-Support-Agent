@@ -5,18 +5,13 @@ no_confirmation_email_json = {
     "steps": [
         {"action": "find_customer_by_email_or_phone"},
         {"action": "fetch_most_recent_order"},
-        {
-            "action": "check_order_status",
-            "expected_status": "successful"
-        },
-        {"action": "verify_email_sent"},
+        {"action": "fetch_order_email"},
         {
             "decision": [
                 {
-                    "if": "email_sent",
+                    "if": "sent",
                     "then": [
-                        {"action": "check_email_recipient"},
-                        {"action": "notify_user_where_email_was_sent"}
+                        {"action": "return_recipient_email_address"},
                     ]
                 },
                 {

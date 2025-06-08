@@ -23,7 +23,6 @@ async def add_task_to_incoming_q(message_obj: OmniChannelMessage1):
     if not redisClient.sismember("incoming_tasks_set", message_obj.sender_id):
         redisClient.sadd("incoming_tasks_set", message_obj.sender_id)
         redisClient.rpush("incoming_tasks", json.dumps(message_obj.__dict__))
-        print("==incoming  ==> ", get_queue_count())
         await channel_layer.group_send(
             "unprocessed_customer_queue",
             {
@@ -40,7 +39,6 @@ async def move_task_from_incoming_q_to_processing_hash():
         if sender_id:
             redisClient.srem("incoming_tasks_set", sender_id)
             redisClient.hset("processing_tasks", sender_id, json.dumps(task))
-            print("== move to processing ==> ", get_queue_count())
             await channel_layer.group_send(
                 "currently_processed_customer_list",
                 {
@@ -58,7 +56,6 @@ async def move_task_from_processing_hash_to_done_hash(sender_id: str):
                 redisClient.sadd("done_tasks_set", sender_id)
                 redisClient.rpush("done_tasks", sender_id, task_str)
             redisClient.hdel("processing_tasks", sender_id)
-            print("== move to done ==> ", get_queue_count())
             await channel_layer.group_send(
                 "processed_customer_list",
                 {

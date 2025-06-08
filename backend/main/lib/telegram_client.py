@@ -103,6 +103,7 @@ class TelegramClientWrapper():
             sender_id=user.username or "unknown",
             sender_name=full_name,
             timestamp=timestamp,
+            phone=user.phone,
             content=message
         )
         await incoming_tasks_handler(chat)
@@ -123,5 +124,4 @@ class TelegramClientWrapper():
             queue
         """
         asyncio.create_task(self._send_worker())
-        print("awaiting new message")
         await self.client.run_until_disconnected()  
