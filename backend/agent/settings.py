@@ -149,3 +149,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'unyimeudemy20@gmail.com'           
+# EMAIL_HOST_PASSWORD = 'dxrrecvgywaucnia'
+# EMAIL_USE_SSL = False
+
+
+# ADMIN_USER_NAME='unyime udoh'
+# ADMIN_USER_EMAIL="unyimeudemy20@gmail.com"
+
+# MANAGERS=[]
+# ADMINS=[]
+# if all([ADMIN_USER_NAME, ADMIN_USER_EMAIL]):
+#     ADMINS +=[
+#         (f'{ADMIN_USER_NAME}', f'{ADMIN_USER_EMAIL}')
+#     ]
+#     MANAGERS=ADMINS

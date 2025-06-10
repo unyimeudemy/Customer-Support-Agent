@@ -8,18 +8,16 @@ from .lib import redis_client
 from rest_framework.decorators import api_view
 from .lib.omni_channel_message import OmniChannelMessage1
 from datetime import datetime
+from django.core.mail import send_mail
 import asyncio
 import logging
-# from sklearn.metrics.pairwise import cosine_similarity
-
+from main.lib.gmail_client import (
+       send_plain_text_email,
+       send_template_email
+)
+from main.template.email_template import html_template, order_mail_template
 
 logging.getLogger('chromadb').setLevel(logging.WARNING)
-
-# import logging
-# logging.getLogger("transformers").setLevel(logging.ERROR)
-# logging.getLogger("chromadb").setLevel(logging.ERROR)
-# logging.getLogger("onnxruntime").setLevel(logging.ERROR)
-
 
 
 class TelegramView(APIView):
@@ -35,71 +33,51 @@ class TelegramView(APIView):
 
 
 
-# Example data
-channel_data = "telegram"
-content_data = "Hello, how can I help?"
-sender_id_data = "unyimeudoh2"
-sender_name_data = "unyime sim 2 udoh"
-phone = "+2347046886451"
-parsed_timestamp = datetime.utcnow()
-
-# Create the instance
-message_1 = OmniChannelMessage1(
-    channel=channel_data,
-    content=content_data,
-    sender_id=sender_id_data,
-    sender_name=sender_name_data,
-    phone=phone,
-    timestamp=parsed_timestamp
-)
-
 @api_view(['GET'])
 def add_new_task(request):
         print("=============== 1 ===============")
-        print(redis_client.get_queue_count())
-        redis_client.add_task_to_incoming_q(message_1)
-        print(redis_client.get_queue_count())
+        # redis_client.add_task_to_incoming_q(message_1)
+        try:
+
+                SMTP_USER = "unyimeudemy20@gmail.com"
+                SMTP_PASSWORD = config("GMAIL_APP_PASSWORD")
+
+                # send_plain_text_email(
+                #         subject="Plain Text Test",
+                #         body="This is a simple plain text email.",
+                #         from_email=SMTP_USER,
+                #         to_email="unyimeudoh20@gmail.com",
+                #         smtp_user=SMTP_USER,
+                #         smtp_password=SMTP_PASSWORD
+                # )
+
+                # Send HTML email using template
+
+
+                send_template_email(
+                        subject="Welcome to Our App",
+                        template_str=order_mail_template,
+                        context_dict={"name": "Unyime"},
+                        from_email=SMTP_USER,
+                        to_email="unyimeudoh20@gmail.com",
+                        smtp_user=SMTP_USER,
+                        smtp_password=SMTP_PASSWORD
+                )
+
+        except Exception as e:
+               print(e)
+               
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def add_task_to_processing(request):
         print("=============== 2 ===============")
-        # print(redis_client.get_queue_count())
-        asyncio.run(redis_client.move_task_from_incoming_q_to_processing_hash())
-        
-        # print(redis_client.get_queue_count())
-
-        # try:
-        #         knowledge_base_collection.add(
-        #                 documents=[
-        #                         "To reset your password, click the 'Forgot Password' link on the login page.",
-        #                         "Our customer support is available 24/7 via chat or phone."
-        #                 ],
-        #                 ids=["doc1", "doc2"],
-        #         )
-        #         return Response({"message": "successful"}, status=200)
-        # except Exception as e:
-        #         print({"error": str(e)})
-
+        # asyncio.run(redis_client.move_task_from_incoming_q_to_processing_hash())
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def add_task_to_done(request):
         print("=============== 3 ===============")
-        # print(redis_client.get_queue_count())
-        asyncio.run(redis_client.move_task_from_processing_hash_to_done_hash("unyimeudoh2"))
-        # redis_client.empty_a_queue('done_tasks')
-        # print(redis_client.get_queue_count())
-
-        # try:
-                # results = knowledge_base_collection.query(
-                #         query_texts=["will there be someone to help with it tommorow?"],
-                #         n_results=1,
-                #         include=["documents", "metadatas"]
-                # )
-        #         print("---------------------> ", results)
-        #         return Response({"message": "successful"}, status=200)
-        # except Exception as e:
-        #         print({"error": str(e)})
-        
+        # asyncio.run(redis_client.move_task_from_processing_hash_to_done_hash("unyimeudoh2"))
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
+

@@ -1,5 +1,12 @@
 import requests
 import time
+from main.lib.gmail_client import (
+       send_plain_text_email,
+       send_template_email
+)
+from main.template.email_template import html_template, order_mail_template
+from decouple import config
+
 
 
 def find_customer_by_email_or_phone(context):
@@ -45,6 +52,7 @@ def return_recipient_email_address(context):
 def send_order_confirmation_email(context):
     time.sleep(1)
     """Send order confirmation mail"""
+    send_mail_with_template()
     context["sent"] = True
     context["order_email"] = {
             "id": 1,
@@ -60,3 +68,35 @@ def send_order_confirmation_email(context):
             "customer": 1
         }    
     return context
+
+
+def send_mail_with_template():
+        try:
+
+            SMTP_USER = "unyimeudemy20@gmail.com"
+            SMTP_PASSWORD = config("GMAIL_APP_PASSWORD")
+
+            # send_plain_text_email(
+            #         subject="Plain Text Test",
+            #         body="This is a simple plain text email.",
+            #         from_email=SMTP_USER,
+            #         to_email="unyimeudoh20@gmail.com",
+            #         smtp_user=SMTP_USER,
+            #         smtp_password=SMTP_PASSWORD
+            # )
+
+            # Send HTML email using template
+
+
+            send_template_email(
+                    subject="Welcome to Our App",
+                    template_str=order_mail_template,
+                    context_dict={"name": "Unyime"},
+                    from_email=SMTP_USER,
+                    to_email="unyimeudoh20@gmail.com",
+                    smtp_user=SMTP_USER,
+                    smtp_password=SMTP_PASSWORD
+            )
+
+        except Exception as e:
+               print(e)
