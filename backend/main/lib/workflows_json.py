@@ -15,9 +15,9 @@ no_confirmation_email_json = {
                     ]
                 },
                 {
-                    "else": {
-                        "action": "send_confirmation_email"
-                    }
+                    "else": [
+                        {"action": "send_order_confirmation_email"}
+                    ]
                 }
             ]
         }

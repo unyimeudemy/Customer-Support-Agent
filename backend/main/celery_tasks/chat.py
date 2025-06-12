@@ -4,7 +4,7 @@ from decouple import config
 from main.lib.intent_classifier import classify_intent
 from main.lib import kb_collection_store
 from main.lib.workflow_map import WORKFLOW_MAP
-from main.lib.workflow_executor  import workflow_executor
+from main.lib.workflow_executor  import WorkflowExecutor
 
 def generate_answer(query, context):
     """Generate response summary"""
@@ -61,7 +61,9 @@ def handle_telegram_chat(self, chat):
         else:
             print("---------- call a workflow ----------" )
             workflow = WORKFLOW_MAP.get(intent)
-            final_context = workflow_executor(workflow, chat["phone"])
+            # final_context = workflow_executor(workflow, chat["phone"])
+            executor = WorkflowExecutor(workflow, chat["phone"])
+            final_context = executor.execute()
             print("final context: ", final_context)
 
 
