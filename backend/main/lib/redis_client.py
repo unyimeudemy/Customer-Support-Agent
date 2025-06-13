@@ -11,11 +11,6 @@ processing_arr = []
 done_arr = []
 
 async def add_task_to_incoming_q(message_obj: OmniChannelMessage1):
-        # redisClient.delete("incoming_tasks")
-        # redisClient.delete("processing_tasks")
-        # redisClient.delete("done_tasks")
-        # print("==incoming  ==> ", get_queue_count())
-
     """
     ensure that task is not already in the incoming task before 
     adding it

@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from decouple import config
 from .lib import telegram_client, redis_client
 from rest_framework import status
-from .lib import redis_client
 from rest_framework.decorators import api_view
 from .lib.omni_channel_message import OmniChannelMessage1
 from datetime import datetime
@@ -16,6 +15,7 @@ from main.lib.gmail_client import (
        send_template_email
 )
 from main.template.email_template import html_template, order_mail_template
+from main.lib.redis_client import redisClient, get_queue_count
 
 logging.getLogger('chromadb').setLevel(logging.WARNING)
 
@@ -80,4 +80,13 @@ def add_task_to_done(request):
         print("=============== 3 ===============")
         # asyncio.run(redis_client.move_task_from_processing_hash_to_done_hash("unyimeudoh2"))
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def empty_redis_queue_and_list(request):
+        redisClient.delete("incoming_tasks")
+        redisClient.delete("processing_tasks")
+        redisClient.delete("done_tasks")
+        print("==incoming  ==> ", get_queue_count())
+        return Response({"message": "successful"}, status=status.HTTP_200_OK)
+
 
