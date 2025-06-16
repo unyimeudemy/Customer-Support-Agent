@@ -83,6 +83,7 @@ def add_task_to_done(request):
 
 @api_view(['GET'])
 def empty_redis_queue_and_list(request):
+        print("=============== 4 ===============")
         redisClient.delete("incoming_tasks")
         redisClient.delete("processing_tasks")
         redisClient.delete("done_tasks")

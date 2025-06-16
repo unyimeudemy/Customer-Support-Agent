@@ -96,6 +96,9 @@ CELERY_TASK_QUEUES = (
 CELERY_TASK_DEFAULT_QUEUE      = "io_tasks"
 CELERY_TASK_DEFAULT_EXCHANGE   = "io_tasks"
 CELERY_TASK_DEFAULT_ROUTING_KEY= "io_tasks"
+CELERY_TASK_ACKS_LATE = False
+CELERY_TASK_REJECT_ON_WORKER_LOST = False
+CELERY_TASK_IGNORE_RESULT = True
 
 
 # Database
@@ -150,23 +153,3 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'unyimeudemy20@gmail.com'           
-# EMAIL_HOST_PASSWORD = 'dxrrecvgywaucnia'
-# EMAIL_USE_SSL = False
-
-
-# ADMIN_USER_NAME='unyime udoh'
-# ADMIN_USER_EMAIL="unyimeudemy20@gmail.com"
-
-# MANAGERS=[]
-# ADMINS=[]
-# if all([ADMIN_USER_NAME, ADMIN_USER_EMAIL]):
-#     ADMINS +=[
-#         (f'{ADMIN_USER_NAME}', f'{ADMIN_USER_EMAIL}')
-#     ]
-#     MANAGERS=ADMINS

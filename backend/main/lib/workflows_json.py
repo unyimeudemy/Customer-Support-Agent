@@ -1,7 +1,11 @@
 
 no_confirmation_email_json = {
     "intent": "NO_CONFIRMATION_EMAIL",
-    "complaint_type": "Missing order confirmation",
+    "description": "Resolve order confirmation mail not sent",
+    "slots": {
+        "email":"",
+        "date_of_purchase": ""
+    },
     "steps": [
         {"action": "find_customer_by_email_or_phone"},
         {"action": "fetch_most_recent_order"},
