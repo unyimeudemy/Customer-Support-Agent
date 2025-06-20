@@ -155,7 +155,7 @@ def send_message_over_telegram(response, recipient_id):
                 message=response
             )
     except Exception as e:
-        print(f"chat io chat process failed with exceptions: {e}")
+        print(f"chat io process failed with exceptions: {e}")
 
 
 def has_empty_field(data):
@@ -188,7 +188,6 @@ def parse_llm_response(response: str) -> dict:
 )
 def handle_telegram_chat(self, chat):
     try:
-
         intent = classify_intent(chat["content"])
 
         if intent == "OPEN_ENDED":
@@ -206,6 +205,7 @@ def handle_telegram_chat(self, chat):
             germini_response_1 = parse_llm_response(germini_response_1) 
 
             if isinstance(germini_response_1, str):
+                print(f"-----------germini_response_1-------------{germini_response_1}------------")
                 context = kb_collection_store.knowledge_base_collection.query(
                     query_texts=[germini_response_1],
                     n_results=5,
@@ -217,6 +217,7 @@ def handle_telegram_chat(self, chat):
                     germini_response_1,
                     context["documents"][0]
                 )
+                print(f"-----------germini_response_2-------------{germini_response_2}------------")
 
                 send_message_over_telegram(germini_response_2, chat["sender_id"])
             else:

@@ -114,14 +114,6 @@ def start_celery_processes():
         cwd=backend_path,
     )
 
-# def stop_celery_processes():
-    # global celery_io_process, celery_cpu_process
-
-    # for proc in (celery_io_process, celery_cpu_process):
-    #     if proc and proc.poll() is None:
-    #         proc.send_signal(signal.SIGTERM)
-
-
 
 def stop_celery_processes():
     global celery_io_process, celery_cpu_process

@@ -9,12 +9,7 @@ from main.celery_tasks.emails import (
     handle_failed_order_email,
     generate_report,
 )
-from agent.celery import (
-    io_active_len,
-    io_reserved_len,
-    cpu_active_len,
-    cpu_reserved_len
-)
+from main.lib.celery_status import get_worker_status
 from celery.signals import task_prerun, task_postrun
 import asyncio
 from .channels_conversation import (
@@ -22,6 +17,8 @@ from .channels_conversation import (
     handle_gmail_conversation,
     handle_whatsapp_conversation
 )
+
+worker_status = get_worker_status()
 
 
 def choose_channel_handler(chat: OmniChannelMessage1):
@@ -40,7 +37,7 @@ async def incoming_tasks_handler(chat: OmniChannelMessage1):
     ):
         
         await add_task_to_incoming_q(chat)
-        if io_active_len < 5:
+        if worker_status["io_active_len"] < 5:
             await move_task_from_incoming_q_to_processing_hash()
             choose_channel_handler(chat)
         # handle_failed_order_email.delay(chat.__dict__)
