@@ -8,6 +8,7 @@ reactjs_process = None
 redis_process = None
 celery_io_process = None
 celery_cpu_process = None
+poll_gmail_process = None 
 
 
 def start_django_server():
@@ -126,3 +127,30 @@ def stop_celery_processes():
             except subprocess.TimeoutExpired:
                 proc.kill()
                 proc.wait()
+
+
+def start_poll_gmail():
+    global poll_gmail_process
+
+    backend_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "../backend")
+    )
+
+    venv_path = os.path.abspath(os.path.join(backend_path, "../env/bin/python"))
+    manage_py = os.path.join(backend_path, "manage.py")
+
+    poll_gmail_process = subprocess.Popen(
+        [venv_path, manage_py, "poll_gmail"],
+        cwd=backend_path,
+    )
+
+
+def stop_poll_gmail():  
+    global poll_gmail_process
+    if poll_gmail_process and poll_gmail_process.poll() is None:
+        poll_gmail_process.terminate()
+        try:
+            poll_gmail_process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            poll_gmail_process.kill()
+

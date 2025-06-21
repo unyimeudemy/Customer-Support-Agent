@@ -1,4 +1,3 @@
-
 import sys
 from PyQt5.QtWidgets import (
     QApplication, 
@@ -16,16 +15,15 @@ from run_server import (
     start_reactjs_server,
     start_redis_server,
     start_celery_processes,
+    start_poll_gmail,
 
     stop_django_server,
     stop_reactjs_server,
     stop_redis_server,
     stop_celery_processes,
+    stop_poll_gmail,
 
 )
-import requests
-import os
-import ctypes
 from pathlib import Path
 from decouple import Config, RepositoryEnv
 from pathlib import Path
@@ -69,6 +67,7 @@ class MainWindow(QMainWindow):
         self.move(frameGm.topLeft())
     
     def closeEvent(self, event):
+        stop_poll_gmail()
         stop_reactjs_server()
         stop_celery_processes()
         stop_django_server()
@@ -77,12 +76,13 @@ class MainWindow(QMainWindow):
         
 
 def main():
+    start_poll_gmail() 
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
 
 
-
 if __name__ == "__main__":
     main()
+    
