@@ -49,7 +49,7 @@ class TelegramClientWrapper():
                 message = msg["message"]
                 await self.client.send_message(recipient, message)
             except Exception as e:
-                print(f"[!] Failed to send message to {recipient}: {e}")
+                print(f"[!] Failed to send message with exception: {e}")
 
 
     async def send_message(self, recipient, message):

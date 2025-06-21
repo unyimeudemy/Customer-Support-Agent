@@ -90,4 +90,3 @@ def empty_redis_queue_and_list(request):
         print("==incoming  ==> ", get_queue_count())
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 
-
