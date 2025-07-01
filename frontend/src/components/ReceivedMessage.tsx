@@ -16,7 +16,7 @@ const ReceivedMessage = () => {
             <Body
                 className="w-auto h-auto bg-white rounded-[5px] p-2"
             >
-                Hi there
+                Hi there, who are you
             </Body>
             <div className="h-[45px] w-full 
             flex flex-row mt-2 

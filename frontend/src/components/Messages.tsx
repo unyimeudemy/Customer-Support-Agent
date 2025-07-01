@@ -8,7 +8,9 @@ const Container = styled.div``
 const Messages = () => {
   return (
     <Container
-    className="w-full h-[570px] flex flex-col gap-2 overflow-y-auto"
+    className="w-full h-[570px] flex flex-col gap-2 overflow-y-auto
+    pr-[18px] 
+    "
   >
     <ReceivedMessage/>
     <ReceivedMessage/>

@@ -16,6 +16,8 @@ from main.lib.gmail_client import (
 )
 from main.template.email_template import html_template, order_mail_template
 from main.lib.redis_client import redisClient, get_queue_count
+from main.lib import telegram_client
+
 
 logging.getLogger('chromadb').setLevel(logging.WARNING)
 
@@ -88,5 +90,19 @@ def empty_redis_queue_and_list(request):
         redisClient.delete("processing_tasks")
         redisClient.delete("done_tasks")
         print("==incoming  ==> ", get_queue_count())
+        return Response({"message": "successful"}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_todays_chat(request):
+        print("=============== 5 ===============")
+        tg = telegram_client.TelegramClientWrapper()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        messages = loop.run_until_complete(tg.get_todays_message("@unyimeudoh2"))
+        print("=============== result ===============", messages)
+
+        for message in messages:
+               print("---------", message)
         return Response({"message": "successful"}, status=status.HTTP_200_OK)
 

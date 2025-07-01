@@ -33,12 +33,18 @@ class GmailSession:
 
         try:
 
+            # seven_days_ago = (datetime.utcnow() - timedelta(days=7)).strftime("%Y/%m/%d")
+            # search_query = f'X-GM-RAW "category:primary is:unread after:{seven_days_ago}"'
+
+            # status, messages = self.mail.search('UTF8', search_query)
+
             seven_days_ago = (datetime.utcnow() - timedelta(days=7)).strftime("%Y/%m/%d")
-            search_query = f'X-GM-RAW "category:primary is:unread after:{seven_days_ago}"'
+            search_query = f'category:primary is:unread after:{seven_days_ago}'
 
-            status, messages = self.mail.search('UTF8', search_query)
+            status, messages = self.mail.uid('search', None, f'X-GM-RAW "{search_query}"')
 
-            if status != "OK" or not messages[0]:
+            # if status != "OK" or not messages[0]:
+            if status != "OK" or not messages or not messages[0]:
                 return {"message": "No unseen messages."}
 
             latest_email_id = messages[0].split()[-1]

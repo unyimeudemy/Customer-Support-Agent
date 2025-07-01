@@ -5,7 +5,7 @@ from telethon.sessions import StringSession
 from telethon.tl.types import InputPhoneContact
 from telethon.tl import functions, types
 from telethon.tl.functions.contacts import ImportContactsRequest
-from datetime import datetime
+from datetime import datetime, timezone
 from decouple import config
 from .omni_channel_message import OmniChannelMessage1
 from .redis_client import add_task_to_incoming_q
@@ -34,6 +34,7 @@ class TelegramClientWrapper():
 
         self.send_queue = queue.Queue()
         self.is_running = False
+        self.today_messages_by_user = {}
 
     def queue_message(self, recipient, message):
         """Enqueue messages from anywhere to out going queue for telegram to dispatch."""
@@ -107,6 +108,29 @@ class TelegramClientWrapper():
             content=message
         )
         await incoming_tasks_handler(chat)
+
+
+    async def get_todays_message(self, username_id):
+        if not self.client.is_connected():
+            await self.client.connect()
+
+        today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        messages = []
+        res = self.client.iter_messages(username_id, reverse=False, limit=200)
+        print("+++++++=------", res)
+        async for message in self.client.iter_messages(username_id, reverse=False, limit=200):
+            if message.date < today_start:
+                break
+            if not message.text:
+                continue
+            messages.append({
+                "text": message.text,
+                "timestamp": message.date.isoformat(),
+                "sender_id": message.sender_id
+            })
+
+        return list(reversed(messages))
+
 
     async def start(self):
 

@@ -9,13 +9,14 @@ const Time = styled.div``
 
 const SentMessage = () => {
   return (
-    <Container className="w-full h-[140px] 
+    <Container className="w-full h-auto 
     flex justify-end
     ">
-        <div className="w-[90%] h-full">
+        <div className="w-auto h-full">
             <Body
-                className="w-full h-[100px] bg-white rounded-[10px]"
+                className="w-auto h-auto p-2 bg-white rounded-[10px]"
             >
+                I am allena, a customer service ai agent for piraxx limited
             </Body>
             <div className="h-[45px] w-full 
             flex flex-row mt-2 justify-end

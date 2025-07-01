@@ -8,7 +8,7 @@ const Container = styled.div``
 const Conversation = () => {
   return (
     <Container
-    className="h-full w-[60%] p-3 
+    className="h-full w-[60%] p-2 
     "
   >
     <Messages/>
